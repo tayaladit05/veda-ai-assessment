@@ -44,7 +44,7 @@ app.delete('/api/assignments/:id', deleteAssignment);
 
 
 // File Upload endpoint registers Multer middleware
-app.post('/api/assignments', upload.single('file'), createAssignment);
+app.post('/api/assignments', upload.single('file') as any, createAssignment);
 
 // Health Check endpoint
 app.get('/health', (req, res) => {
