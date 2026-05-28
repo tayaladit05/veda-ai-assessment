@@ -760,6 +760,9 @@ h1, h2, h3, h4, h5, h6 {
   .desktop-only-flex {
     display: none !important;
   }
+  .floating-create-btn {
+    display: none !important;
+  }
   .mobile-only {
     display: block !important;
   }
