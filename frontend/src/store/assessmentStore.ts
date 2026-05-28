@@ -229,10 +229,23 @@ export const useAssessmentStore = create<AssessmentState>((set, get) => ({
     // Clean up existing socket connection first
     get().disconnectWebSocket();
 
-    // Determine secure or standard ws protocol based on location
-    const wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    // During local development, the Next.js client connects to backend port 5001 directly.
-    const wsUrl = `${wsProto}//${window.location.hostname}:5001`;
+    let wsUrl;
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+    if (backendUrl) {
+      try {
+        const parsedUrl = new URL(backendUrl);
+        const wsProto = parsedUrl.protocol === 'https:' ? 'wss:' : 'ws:';
+        wsUrl = `${wsProto}//${parsedUrl.host}`;
+      } catch (err) {
+        console.error('Failed to parse NEXT_PUBLIC_BACKEND_URL for WebSocket, falling back to hostname', err);
+        const wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        wsUrl = `${wsProto}//${window.location.hostname}:5001`;
+      }
+    } else {
+      // During local development, the Next.js client connects to backend port 5001 directly.
+      const wsProto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      wsUrl = `${wsProto}//${window.location.hostname}:5001`;
+    }
     
     console.log(`Connecting WebSocket to: ${wsUrl}`);
     const socket = new WebSocket(wsUrl);
