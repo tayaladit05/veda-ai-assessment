@@ -16,7 +16,9 @@ import {
   FileText,
   Wrench,
   BookOpen,
-  Settings
+  Settings,
+  Plus,
+  Menu
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -290,6 +292,101 @@ export default function RootLayout({
           backgroundColor: (pathname === '/' && assignments.length === 0) ? '#ffffff' : 'var(--bg-primary)',
           transition: 'background-color 0.3s'
         }}>
+          {/* Floating Mobile Header Card (Figma Specs) */}
+          <div className="mobile-header-container no-print">
+            {/* Left: VedaAI Logo */}
+            <Link href="/" style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              textDecoration: 'none'
+            }}>
+              <div style={{
+                background: 'linear-gradient(135deg, #111827 0%, #1f2937 100%)',
+                width: '28px',
+                height: '28px',
+                borderRadius: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 'bold',
+                color: '#ffffff',
+                fontSize: '0.95rem',
+                fontFamily: "'Outfit', sans-serif"
+              }}>
+                V
+              </div>
+              <span style={{
+                fontSize: '1.1rem',
+                fontWeight: 800,
+                fontFamily: "'Outfit', sans-serif",
+                color: '#111827',
+                letterSpacing: '-0.02em'
+              }}>
+                VedaAI
+              </span>
+            </Link>
+
+            {/* Right Actions: Notification Bell, Profile Circle, Menu button */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+              {/* Notification Bell */}
+              <div style={{ position: 'relative' }}>
+                <button style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  backgroundColor: '#f3f4f6',
+                  border: 'none',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: '#111827'
+                }}>
+                  <Bell size={15} />
+                </button>
+                <div style={{
+                  position: 'absolute',
+                  top: '1px',
+                  right: '1px',
+                  width: '6.5px',
+                  height: '6.5px',
+                  backgroundColor: '#ff5a36',
+                  borderRadius: '50%',
+                  border: '1px solid #ffffff'
+                }} />
+              </div>
+
+              {/* Profile Avatar */}
+              <img 
+                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" 
+                alt="Profile Avatar"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                  border: '1.5px solid #ffffff'
+                }}
+              />
+
+              {/* Hamburger Menu (Menu icon) */}
+              <button style={{
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                color: '#111827',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '0.2rem'
+              }}>
+                <Menu size={20} />
+              </button>
+            </div>
+          </div>
+
           {/* Header matching mockup */}
           <header className="no-print" style={{
             position: 'sticky',
@@ -430,21 +527,18 @@ export default function RootLayout({
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e5e7eb'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
                 >
-                  <div style={{
-                    width: '28px',
-                    height: '28px',
-                    borderRadius: '50%',
-                    backgroundColor: '#fed7aa',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.95rem',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-                    fontWeight: 700,
-                    color: '#7c2d12'
-                  }}>
-                    👨‍🏫
-                  </div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" 
+                    alt="Profile Avatar"
+                    style={{
+                      width: '28px',
+                      height: '28px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+                      border: '1.5px solid #ffffff'
+                    }}
+                  />
                   <span style={{
                     fontFamily: "'Plus Jakarta Sans', sans-serif",
                     fontWeight: 600,
@@ -463,6 +557,33 @@ export default function RootLayout({
           <main style={{ flexGrow: 1, position: 'relative' }}>
             {children}
           </main>
+
+          {/* Floating Mobile FAB (Figma Specs) */}
+          <Link href="/create" className="mobile-fab no-print">
+            <Plus size={24} strokeWidth={3} />
+          </Link>
+
+          {/* Floating Mobile Bottom Navigation Bar (Figma Specs) */}
+          <div className="mobile-nav-bar no-print">
+            {[
+              { label: 'Home', icon: Home, active: pathname === '/' && assignments.length !== 0, path: '/' },
+              { label: 'Assignments', icon: FileText, active: pathname === '/' || pathname.includes('assessment') || pathname === '/create', path: '/' },
+              { label: 'Library', icon: BookOpen, active: false, path: '/' },
+              { label: 'AI Toolkit', icon: Sparkles, active: false, path: '/' }
+            ].map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={idx}
+                  href={item.path}
+                  className={`mobile-nav-item ${item.active ? 'active' : ''}`}
+                >
+                  <Icon className="mobile-nav-icon" size={18} strokeWidth={item.active ? 2.5 : 2} />
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
+          </div>
         </div>
 
       </body>

@@ -268,38 +268,26 @@ ${questionRows.map(row => `- ${row.count} questions of type "${row.type}", each 
   return (
     <div className="container fade-in" style={{ maxWidth: '800px', paddingBottom: '5rem' }}>
       
-      {/* Return home link */}
+      {/* Mobile-only header back button & title matching Mockup */}
       {!showProgressScreen && (
-        <Link href="/" style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '0.4rem',
-          color: 'var(--text-secondary)',
-          textDecoration: 'none',
-          marginBottom: '1.5rem',
-          fontSize: '0.9rem',
-          transition: 'color 0.2s',
-          fontWeight: 600
-        }}
-        onMouseEnter={(e) => e.currentTarget.style.color = '#111827'}
-        onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
-        >
-          <ArrowLeft size={16} />
-          <span>Back to Dashboard</span>
-        </Link>
-      )}
-
-      {/* Stepper green-dot header indicator matching Mockup */}
-      <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.4rem',
-        marginBottom: '1rem'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <span className="green-dot-bullet" />
+        <div className="mobile-only-flex" style={{ alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', marginTop: '0.5rem' }}>
+          <Link href="/" style={{
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            backgroundColor: '#ffffff',
+            border: '1px solid rgba(0, 0, 0, 0.05)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.03)',
+            color: '#111827',
+            textDecoration: 'none'
+          }}>
+            <ArrowLeft size={18} />
+          </Link>
           <h1 style={{ 
-            fontSize: '1.75rem', 
+            fontSize: '1.25rem', 
             fontWeight: 700, 
             color: 'var(--text-primary)',
             fontFamily: "'Outfit', sans-serif"
@@ -307,13 +295,55 @@ ${questionRows.map(row => `- ${row.count} questions of type "${row.type}", each 
             Create Assignment
           </h1>
         </div>
-        <p style={{ 
-          color: 'var(--text-secondary)', 
-          fontSize: '0.9rem',
-          fontFamily: "'Plus Jakarta Sans', sans-serif"
+      )}
+
+      {/* Desktop-only return home link & title header */}
+      <div className="desktop-only">
+        {!showProgressScreen && (
+          <Link href="/" style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            color: 'var(--text-secondary)',
+            textDecoration: 'none',
+            marginBottom: '1.5rem',
+            fontSize: '0.9rem',
+            transition: 'color 0.2s',
+            fontWeight: 600
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.color = '#111827'}
+          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+          >
+            <ArrowLeft size={16} />
+            <span>Back to Dashboard</span>
+          </Link>
+        )}
+
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.4rem',
+          marginBottom: '1rem'
         }}>
-          Set up a new assignment for your students.
-        </p>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span className="green-dot-bullet" />
+            <h1 style={{ 
+              fontSize: '1.75rem', 
+              fontWeight: 700, 
+              color: 'var(--text-primary)',
+              fontFamily: "'Outfit', sans-serif"
+            }}>
+              Create Assignment
+            </h1>
+          </div>
+          <p style={{ 
+            color: 'var(--text-secondary)', 
+            fontSize: '0.9rem',
+            fontFamily: "'Plus Jakarta Sans', sans-serif"
+          }}>
+            Set up a new assignment for your students.
+          </p>
+        </div>
       </div>
 
       {/* Stepper segmented bar indicator (left active, right active depending on stage) */}
@@ -621,105 +651,200 @@ ${questionRows.map(row => `- ${row.count} questions of type "${row.type}", each 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
               <span className="input-label">Question Types Distribution</span>
               
-              <table className="question-type-table">
-                <thead>
-                  <tr>
-                    <th style={{ width: '45%' }}>Question Type</th>
-                    <th style={{ width: '5%' }}></th>
-                    <th style={{ width: '25%' }}>No. of Questions</th>
-                    <th style={{ width: '25%' }}>Marks</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {questionRows.map((row) => (
-                    <tr key={row.id} className="fade-in">
-                      {/* Dropdown selector */}
-                      <td>
-                        <select
-                          className="custom-select"
-                          value={row.type}
-                          onChange={(e) => handleTypeSelection(row.id, e.target.value)}
-                          disabled={isSubmitting}
-                        >
-                          {availableQuestionTypes.map(opt => (
-                            <option key={opt} value={opt}>{opt}</option>
-                          ))}
-                        </select>
-                      </td>
+              {/* Desktop-only tabular display */}
+              <div className="desktop-only">
+                <table className="question-type-table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: '45%' }}>Question Type</th>
+                      <th style={{ width: '5%' }}></th>
+                      <th style={{ width: '25%' }}>No. of Questions</th>
+                      <th style={{ width: '25%' }}>Marks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {questionRows.map((row) => (
+                      <tr key={row.id} className="fade-in">
+                        {/* Dropdown selector */}
+                        <td>
+                          <select
+                            className="custom-select"
+                            value={row.type}
+                            onChange={(e) => handleTypeSelection(row.id, e.target.value)}
+                            disabled={isSubmitting}
+                          >
+                            {availableQuestionTypes.map(opt => (
+                              <option key={opt} value={opt}>{opt}</option>
+                            ))}
+                          </select>
+                        </td>
 
-                      {/* Row Delete button */}
-                      <td>
-                        <button
-                          type="button"
-                          onClick={() => removeQuestionRow(row.id)}
-                          disabled={isSubmitting || questionRows.length <= 1}
-                          style={{
-                            background: 'transparent',
-                            border: 'none',
-                            color: 'var(--text-muted)',
-                            cursor: 'pointer',
-                            padding: '0.3rem',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            transition: 'color 0.2s'
-                          }}
-                          onMouseEnter={(e) => e.currentTarget.style.color = 'var(--error)'}
-                          onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
-                        >
-                          <X size={18} />
-                        </button>
-                      </td>
-
-                      {/* Questions Count stepper steppers */}
-                      <td>
-                        <div className="stepper-control">
+                        {/* Row Delete button */}
+                        <td>
                           <button
                             type="button"
-                            className="stepper-btn"
+                            onClick={() => removeQuestionRow(row.id)}
+                            disabled={isSubmitting || questionRows.length <= 1}
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: 'var(--text-muted)',
+                              cursor: 'pointer',
+                              padding: '0.3rem',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              transition: 'color 0.2s'
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--error)'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                          >
+                            <X size={18} />
+                          </button>
+                        </td>
+
+                        {/* Questions Count stepper steppers */}
+                        <td>
+                          <div className="stepper-control">
+                            <button
+                              type="button"
+                              className="stepper-btn"
+                              disabled={isSubmitting || row.count <= 1}
+                              onClick={() => updateRowField(row.id, 'count', -1)}
+                            >
+                              —
+                            </button>
+                            <span className="stepper-value">{row.count}</span>
+                            <button
+                              type="button"
+                              className="stepper-btn"
+                              disabled={isSubmitting}
+                              onClick={() => updateRowField(row.id, 'count', 1)}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </td>
+
+                        {/* Marks stepper steppers */}
+                        <td>
+                          <div className="stepper-control">
+                            <button
+                              type="button"
+                              className="stepper-btn"
+                              disabled={isSubmitting || row.marks <= 1}
+                              onClick={() => updateRowField(row.id, 'marks', -1)}
+                            >
+                              —
+                            </button>
+                            <span className="stepper-value">{row.marks}</span>
+                            <button
+                              type="button"
+                              className="stepper-btn"
+                              disabled={isSubmitting}
+                              onClick={() => updateRowField(row.id, 'marks', 1)}
+                            >
+                              +
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile-only stacked card elements */}
+              <div className="mobile-only-flex" style={{ flexDirection: 'column', gap: '1rem', marginTop: '0.5rem' }}>
+                {questionRows.map((row) => (
+                  <div key={row.id} className="question-mobile-card fade-in">
+                    
+                    {/* Card Top: Dropdown Selector & Remove (X) Icon */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                      <select
+                        className="custom-select"
+                        style={{ maxWidth: '85%', padding: '0.5rem 2.2rem 0.5rem 0.75rem', fontSize: '0.88rem' }}
+                        value={row.type}
+                        onChange={(e) => handleTypeSelection(row.id, e.target.value)}
+                        disabled={isSubmitting}
+                      >
+                        {availableQuestionTypes.map(opt => (
+                          <option key={opt} value={opt}>{opt}</option>
+                        ))}
+                      </select>
+
+                      <button
+                        type="button"
+                        onClick={() => removeQuestionRow(row.id)}
+                        disabled={isSubmitting || questionRows.length <= 1}
+                        style={{
+                          background: 'transparent',
+                          border: 'none',
+                          color: 'var(--text-muted)',
+                          cursor: 'pointer',
+                          padding: '0.2rem'
+                        }}
+                      >
+                        <X size={18} />
+                      </button>
+                    </div>
+
+                    {/* Card Bottom: Rounded Gray Stepper Wrapper */}
+                    <div className="stepper-mobile-card-row">
+                      
+                      {/* Left stepper: No. of Questions */}
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem', flex: 1 }}>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>No. of Questions</span>
+                        <div className="stepper-control-mobile">
+                          <button
+                            type="button"
+                            className="stepper-btn-mobile"
                             disabled={isSubmitting || row.count <= 1}
                             onClick={() => updateRowField(row.id, 'count', -1)}
                           >
                             —
                           </button>
-                          <span className="stepper-value">{row.count}</span>
+                          <span className="stepper-value-mobile">{row.count}</span>
                           <button
                             type="button"
-                            className="stepper-btn"
+                            className="stepper-btn-mobile"
                             disabled={isSubmitting}
                             onClick={() => updateRowField(row.id, 'count', 1)}
                           >
                             +
                           </button>
                         </div>
-                      </td>
+                      </div>
 
-                      {/* Marks stepper steppers */}
-                      <td>
-                        <div className="stepper-control">
+                      {/* Right stepper: Marks */}
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem', flex: 1 }}>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)' }}>Marks</span>
+                        <div className="stepper-control-mobile">
                           <button
                             type="button"
-                            className="stepper-btn"
+                            className="stepper-btn-mobile"
                             disabled={isSubmitting || row.marks <= 1}
                             onClick={() => updateRowField(row.id, 'marks', -1)}
                           >
                             —
                           </button>
-                          <span className="stepper-value">{row.marks}</span>
+                          <span className="stepper-value-mobile">{row.marks}</span>
                           <button
                             type="button"
-                            className="stepper-btn"
+                            className="stepper-btn-mobile"
                             disabled={isSubmitting}
                             onClick={() => updateRowField(row.id, 'marks', 1)}
                           >
                             +
                           </button>
                         </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </div>
+
+                    </div>
+
+                  </div>
+                ))}
+              </div>
 
               {/* Add Question Row & Calculations footer row */}
               <div style={{
@@ -850,34 +975,16 @@ ${questionRows.map(row => `- ${row.count} questions of type "${row.type}", each 
           </div>
 
           {/* Stepper wizard bottom buttons (Previous & Next ->) */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: '1rem',
-            padding: '0 0.5rem'
-          }}>
+          <div className="wizard-footer-container">
             {/* Left: Previous (link to home dashboard) */}
-            <Link href="/" style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-              color: 'var(--text-secondary)',
-              textDecoration: 'none',
-              fontSize: '0.95rem',
-              fontWeight: 700,
-              transition: 'color 0.2s'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.color = '#111827'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
-            >
+            <Link href="/" className="wizard-prev-btn">
               <span>← Previous</span>
             </Link>
 
             {/* Right: Next -> black pill button */}
             <button 
               type="submit" 
-              className="stepper-nav-btn"
+              className="wizard-next-btn"
               disabled={isSubmitting}
               style={{
                 display: 'flex',

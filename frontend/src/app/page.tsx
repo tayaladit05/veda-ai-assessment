@@ -101,7 +101,7 @@ export default function Dashboard() {
         padding: '2rem',
         textAlign: 'center',
         fontFamily: "'Plus Jakarta Sans', sans-serif"
-      }} className="fade-in">
+      }} className="fade-in mobile-empty-state">
         <svg width="220" height="220" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ marginBottom: '1.5rem' }}>
           <circle cx="110" cy="110" r="70" fill="#f3f4f6" />
           <path d="M70 60 C 55 62, 45 80, 75 80 C 95 80, 70 45, 55 90" stroke="#1f2937" strokeWidth="2.5" strokeLinecap="round" fill="none" />
@@ -291,7 +291,7 @@ export default function Dashboard() {
         </div>
 
         {/* Right Side: Pill Search */}
-        <div style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
+        <div className="search-pill-container" style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
           <Search 
             size={16} 
             style={{ 
@@ -316,11 +316,7 @@ export default function Dashboard() {
       {/* Main Content Area */}
       {isLoading && assignments.length === 0 ? (
         // Premium Skeletal Loading grid
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(440px, 1fr))',
-          gap: '1.5rem'
-        }}>
+        <div className="assignments-grid">
           {[1, 2, 3, 4].map((n) => (
             <div key={n} className="dashboard-card" style={{ height: '120px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -373,11 +369,7 @@ export default function Dashboard() {
         </div>
       ) : (
         // Grid cards list matching Mockup (2-column layout)
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(440px, 1fr))',
-          gap: '1.5rem'
-        }}>
+        <div className="assignments-grid">
           {filteredAssignments.map((assignment) => {
             const isCompleted = assignment.status === 'COMPLETED';
             const isGenerating = assignment.status === 'GENERATING' || assignment.status === 'PENDING';
